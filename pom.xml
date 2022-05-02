@@ -87,6 +87,13 @@
             <version>${version.jquery}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+ 	<dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+ 	 <type>jar</type>
+ 	</dependency>
     </dependencies>
 
     <profiles>
