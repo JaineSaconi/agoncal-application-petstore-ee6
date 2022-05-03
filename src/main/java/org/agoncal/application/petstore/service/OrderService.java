@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.NonNull;
 
 /**
  * @author Antonio Goncalves
@@ -56,10 +57,7 @@ public class OrderService implements Serializable {
         return order;
     }
 
-    public Order findOrder(Long orderId) {
-        if (orderId == null)
-            throw new ValidationException("Invalid order id");
-
+    public Order findOrder(@NonNull Long orderId) {
         return em.find(Order.class, orderId);
     }
 
@@ -68,9 +66,7 @@ public class OrderService implements Serializable {
         return typedQuery.getResultList();
     }
 
-    public void removeOrder(Order order) {
-        if (order == null)
-            throw new ValidationException("Order object is null");
+    public void removeOrder(@NonNull Order order) {
 
         em.remove(em.merge(order));
     }

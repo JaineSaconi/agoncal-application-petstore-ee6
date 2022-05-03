@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.List;
+import lombok.NonNull;
 
 /**
  * @author Antonio Goncalves
@@ -34,16 +35,12 @@ public class CatalogService implements Serializable {
     // =              Public Methods        =
     // ======================================
 
-    public Category findCategory(Long categoryId) {
-        if (categoryId == null)
-            throw new ValidationException("Invalid category id");
+    public Category findCategory(@NonNull Long categoryId) {
 
         return em.find(Category.class, categoryId);
     }
 
-    public Category findCategory(String categoryName) {
-        if (categoryName == null)
-            throw new ValidationException("Invalid category name");
+    public Category findCategory(@NonNull String categoryName) {
 
         TypedQuery<Category> typedQuery = em.createNamedQuery(Category.FIND_BY_NAME, Category.class);
         typedQuery.setParameter("pname", categoryName);
@@ -55,47 +52,35 @@ public class CatalogService implements Serializable {
         return typedQuery.getResultList();
     }
 
-    public Category createCategory(Category category) {
-        if (category == null)
-            throw new ValidationException("Category object is null");
+    public Category createCategory(@NonNull Category category) {
 
         em.persist(category);
         return category;
     }
 
-    public Category updateCategory(Category category) {
-        if (category == null)
-            throw new ValidationException("Category object is null");
+    public Category updateCategory(@NonNull Category category) {
 
         return em.merge(category);
     }
 
-    public void removeCategory(Category category) {
-        if (category == null)
-            throw new ValidationException("Category object is null");
-
+    public void removeCategory(@NonNull Category category) {
+    
         em.remove(em.merge(category));
     }
 
-    public void removeCategory(Long categoryId) {
-        if (categoryId == null)
-            throw new ValidationException("Invalid category id");
+    public void removeCategory(@NonNull Long categoryId) {
 
         removeCategory(findCategory(categoryId));
     }
 
-    public List<Product> findProducts(String categoryName) {
-        if (categoryName == null)
-            throw new ValidationException("Invalid category name");
+    public List<Product> findProducts(@NonNull String categoryName) {
 
         TypedQuery<Product> typedQuery = em.createNamedQuery(Product.FIND_BY_CATEGORY_NAME, Product.class);
         typedQuery.setParameter("pname", categoryName);
         return typedQuery.getResultList();
     }
 
-    public Product findProduct(Long productId) {
-        if (productId == null)
-            throw new ValidationException("Invalid product id");
+    public Product findProduct(@NonNull Long productId) {
 
         Product product = em.find(Product.class, productId);
         if (product != null) {
@@ -109,9 +94,7 @@ public class CatalogService implements Serializable {
         return typedQuery.getResultList();
     }
 
-    public Product createProduct(Product product) {
-        if (product == null)
-            throw new ValidationException("Product object is null");
+    public Product createProduct(@NonNull Product product) {
 
         if (product.getCategory() != null && product.getCategory().getId() == null)
             em.persist(product.getCategory());
@@ -120,40 +103,29 @@ public class CatalogService implements Serializable {
         return product;
     }
 
-    public Product updateProduct(Product product) {
-        if (product == null)
-            throw new ValidationException("Product object is null");
+    public Product updateProduct(@NonNull Product product) {
 
         return em.merge(product);
     }
 
-    public void removeProduct(Product product) {
-        if (product == null)
-            throw new ValidationException("Product object is null");
+    public void removeProduct(@NonNull Product product) {
 
         em.remove(em.merge(product));
     }
 
-    public void removeProduct(Long productId) {
-        if (productId == null)
-            throw new ValidationException("Invalid product id");
+    public void removeProduct(@NonNull Long productId) {
 
         removeProduct(findProduct(productId));
     }
 
-    public List<Item> findItems(Long productId) {
-        if (productId == null)
-            throw new ValidationException("Invalid product id");
+    public List<Item> findItems(@NonNull Long productId) {
 
         TypedQuery<Item> typedQuery = em.createNamedQuery(Item.FIND_BY_PRODUCT_ID, Item.class);
         typedQuery.setParameter("productId", productId);
         return typedQuery.getResultList();
     }
 
-    public Item findItem(final Long itemId) {
-        if (itemId == null)
-            throw new ValidationException("Invalid item id");
-
+    public Item findItem(@NonNull final Long itemId) {
         return em.find(Item.class, itemId);
     }
 
@@ -171,10 +143,7 @@ public class CatalogService implements Serializable {
         return typedQuery.getResultList();
     }
 
-    public Item createItem(Item item) {
-        if (item == null)
-            throw new ValidationException("Item object is null");
-
+    public Item createItem(@NonNull Item item) {
         if (item.getProduct() != null && item.getProduct().getId() == null) {
             em.persist(item.getProduct());
             if (item.getProduct().getCategory() != null && item.getProduct().getCategory().getId() == null)
@@ -185,23 +154,16 @@ public class CatalogService implements Serializable {
         return item;
     }
 
-    public Item updateItem(Item item) {
-        if (item == null)
-            throw new ValidationException("Item object is null");
-
+    public Item updateItem(@NonNull Item item) {
         return em.merge(item);
     }
 
-    public void removeItem(Item item) {
-        if (item == null)
-            throw new ValidationException("Item object is null");
+    public void removeItem(@NonNull Item item) {
 
         em.remove(em.merge(item));
     }
 
-    public void removeItem(Long itemId) {
-        if (itemId == null)
-            throw new ValidationException("itemId is null");
+    public void removeItem(@NonNull Long itemId) {
 
         removeItem(findItem(itemId));
     }

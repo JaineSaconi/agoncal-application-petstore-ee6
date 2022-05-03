@@ -11,6 +11,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.util.List;
+import lombok.NonNull;
 
 /**
  * @author Antonio Goncalves
@@ -49,20 +50,13 @@ public class CustomerService implements Serializable {
         }
     }
 
-    public Customer createCustomer(final Customer customer) {
-
-        if (customer == null)
-            throw new ValidationException("Customer object is null");
-
+    public Customer createCustomer(@NonNull final Customer customer) {
         em.persist(customer);
 
         return customer;
     }
 
-    public Customer findCustomer(final String login) {
-
-        if (login == null)
-            throw new ValidationException("Invalid login");
+    public Customer findCustomer(@NonNull final String login) {
 
         TypedQuery<Customer> typedQuery = em.createNamedQuery(Customer.FIND_BY_LOGIN, Customer.class);
         typedQuery.setParameter("login", login);
@@ -93,11 +87,7 @@ public class CustomerService implements Serializable {
         return typedQuery.getResultList();
     }
 
-    public Customer updateCustomer(final Customer customer) {
-
-        // Make sure the object is valid
-        if (customer == null)
-            throw new ValidationException("Customer object is null");
+    public Customer updateCustomer(@NonNull final Customer customer) {
 
         // Update the object in the database
         em.merge(customer);
@@ -105,9 +95,7 @@ public class CustomerService implements Serializable {
         return customer;
     }
 
-    public void removeCustomer(final Customer customer) {
-        if (customer == null)
-            throw new ValidationException("Customer object is null");
+    public void removeCustomer(@NonNull final Customer customer) {
 
         em.remove(em.merge(customer));
     }
